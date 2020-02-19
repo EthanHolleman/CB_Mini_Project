@@ -3,6 +3,7 @@ from get_args import get_args
 from data import run_wget, convert_to_fastq
 from kallisto import download_accession, make_kalisto_index
 
+
 def main():
 
     args = get_args()
@@ -23,5 +24,3 @@ def main():
     # issue if already have index donesnt download the
     # need to write below to log file
     # The HCMV genome (EF99921) has #CDS
-
-    
