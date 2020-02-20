@@ -16,7 +16,7 @@ def run_kallisto(k_index, query_file_paths, kallisto_executable='kallisto'):
     '''
 
 
-def make_kalisto_index(trans_file, output_dir, kallisto_executable):
+def make_kalisto_index(trans_file, output_dir, kallisto_executable='kallisto'):
     '''
     Given a transcriptome fasta file and an output dir runs kallisto via
     subprocess to create a new kallisto index from that fasta file. Returns the
@@ -27,7 +27,8 @@ def make_kalisto_index(trans_file, output_dir, kallisto_executable):
 
     '''
     output_file = os.path.join(output_dir, 'mp_kalisto_index.idx')
-    cmd = [kallisto_executable, 'index', '-i', output_file, trans_file]
+    cmd = [kallisto_executable, 'index', '-i', output_file, trans_file,
+           '--make-unique']
     subprocess.call(cmd)
     return output_file
 
