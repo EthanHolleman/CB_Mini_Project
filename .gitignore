@@ -3,3 +3,8 @@
 
 # ignore txt
 *.txt
+
+# ignore unextended files
+*
+!/**/
+!*.*
