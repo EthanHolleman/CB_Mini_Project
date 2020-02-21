@@ -1,5 +1,6 @@
 import subprocess
 import os
+import csv
 
 from Bio import Entrez
 from Bio import SeqIO
@@ -7,14 +8,28 @@ from Bio import SeqRecord
 from Bio.Seq import Seq
 
 
-def run_kallisto(k_index, query_file_paths, kallisto_executable='kallisto'):
-    pass
+def run_kallisto(k_index, query_file_paths, output_dir, 
+                 kallisto_executable='kallisto', b=30, t=4):
     '''
     Given the path to a kallisto index and a list of query files
     takes the query filepaths uses subprocess to run analysis using 
     kallisto program. 
     '''
-
+    # make new directory for each call? Have to test that out.
+    for query_a, query_b in query_file_paths:
+        output_file = os.path.join(output_dir, os.path.basename(query_a) + '_kallisto')
+        
+        cmd = [kallisto_executable, 'quant', '-i', k_index, '-o', output_file,
+               '-b', b, '-t', t, query_a, query_b]
+    
+        cmd = [str(i) for i in cmd]  # convert everything to string
+        subprocess.call(cmd)
+  
+  def generate_sleuth_table():
+      
+    
+    # > kallisto quant -i index/index.idx   -o results/DRR002318 -b 30 -t 4  data/DRR002318_1.fastq.gz   data/DRR002318_2.fastq.gz
+    # need to write some kind of log file that can pass onto sleuth
 
 def make_kalisto_index(trans_file, output_dir, kallisto_executable='kallisto'):
     '''

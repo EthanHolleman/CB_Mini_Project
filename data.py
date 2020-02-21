@@ -33,8 +33,24 @@ def convert_to_fastq(SRA_paths):
     fastq files as it runs. Appends ''
     for SRA in SRA_paths appends .fastq to the filenames.
     '''
+    print('Converting files to fastq format')
+    
+    # need to get paths to paired end files
+    fastq_paths = []
     for SRA in SRA_paths:
-        cmd = ['fastq-dump', SRA]
+        fastq_name = SRA + '_fastq'
+        cmd = ['fastq-dump', SRA, '-O', fastq_name, '--split-files']
         subprocess.call(cmd)
-        yield SRA_paths + '.fastq'
-        #  yield the fastq file path
+        fastq_paths.append(fastq_name)  # returns a directory with the paired end files
+    return fastq_paths
+
+def get_paired_end_paths_as_lists(fastq_dirs):
+    '''
+    Given the output from convert_to_fastq (directories holding the newly
+    converted paired end fastq files) returns as list of lists the paths to
+    the individual fastq files so they can be passed into kallisto function.
+    '''
+    paired_reads = []
+    for fq_dir in fastq_dirs:
+        paired_reads.append([os.path.join(fq_dir, f) for f in os.listdir(fq_dir)])
+    return paired_reads
