@@ -24,9 +24,6 @@ def run_kallisto(k_index, query_file_paths, output_dir,
     
         cmd = [str(i) for i in cmd]  # convert everything to string
         subprocess.call(cmd)
-  
-  def generate_sleuth_table():
-      
     
     # > kallisto quant -i index/index.idx   -o results/DRR002318 -b 30 -t 4  data/DRR002318_1.fastq.gz   data/DRR002318_2.fastq.gz
     # need to write some kind of log file that can pass onto sleuth
