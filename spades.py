@@ -12,7 +12,7 @@ def assemble_with_spades(input_files, output_dir, threads=4,
     '''
     input_list = ['-{} {}'.format(i+1, f) for i, f in enumerate(input_files)]
     cmd = [spades_executable, '-k', '55,77,99,127', '-t', threads,
-           '--only-assembler', '-o', output_dir] + input_files
+           '--only-assembler', '-o', output_dir] + input_list
     subprocess.call(cmd)
 
     return output_dir

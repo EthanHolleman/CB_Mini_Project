@@ -1,6 +1,11 @@
 import subprocess
 import os
 
+from Bio import Entrez
+from Bio import SeqIO
+from Bio import SeqRecord
+from Bio.Seq import Seq
+
 URLS = ['https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR5660033/SRR5660033.1',
         'https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR5660033/SRR5660033.1',
         'https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR5660044/SRR5660044.1',
@@ -54,3 +59,36 @@ def get_paired_end_paths_as_lists(fastq_dirs):
     for fq_dir in fastq_dirs:
         paired_reads.append([os.path.join(fq_dir, f) for f in os.listdir(fq_dir)])
     return paired_reads
+
+def download_accession(output_dir, entrez_email='eholleman@luc.edu', dtype='cdna'):
+    '''
+    Use Biopython Entrez and SeqIO to first pull the transcriptome accession
+    from genbank(nucleotide database) and then write the records in the
+    SeqIO object to a fasta file which then can be passed into the 
+    make_kalisto_index function. Returns the absolute path to the 
+    accession fasta file as a string and the number of coding sequences 
+    as an int both in a tuple. 
+    
+    Download accession also works in another mode. By setting the dtype arg to 
+    'genome' it will download and return path to the complete genome of the 
+    accession. Used for handing off to bowtie index maker. 
+    '''
+    ACC = 'EF999921.1'
+    output_file = os.path.join(output_dir, ACC)
+    Entrez.email = entrez_email
+    handle = Entrez.efetch(db="nucleotide", id=ACC,
+                           rettype="gb", retmode="text")
+    #  fetch the accession
+    record = SeqIO.read(handle, 'genbank')
+    
+    if dtype == 'cdna':
+        record.features = [f for f in record.features if f.type == "CDS"]
+        num_cds = len(record.features)
+        seq_recs = [r.extract(record) for r in record.features]
+        SeqIO.write(seq_recs, output_file, 'fasta')
+        
+        return output_file, num_cds
+    elif dtype == 'genome':
+        SeqIO.write(record, output_file, 'fasta')
+
+        return output_file

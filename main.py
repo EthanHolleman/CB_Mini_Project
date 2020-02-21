@@ -23,7 +23,7 @@ def main():
     
     paired_fastqs = get_paired_end_paths_as_lists(args.q)
     
-    run_kallisto(args.k, paired_fastqs, args.o)
+    kallisto_dirs = run_kallisto(args.k, paired_fastqs, args.o)
     
     
     #print(args.q)
