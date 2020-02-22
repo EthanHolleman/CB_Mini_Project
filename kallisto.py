@@ -2,11 +2,6 @@ import subprocess
 import os
 import csv
 
-from Bio import Entrez
-from Bio import SeqIO
-from Bio import SeqRecord
-from Bio.Seq import Seq
-
 
 def run_kallisto(k_index, query_file_paths, output_dir, 
                  kallisto_executable='kallisto', b=30, t=4):
@@ -19,7 +14,7 @@ def run_kallisto(k_index, query_file_paths, output_dir,
     kallisto_dirs = []
     for query_a, query_b in query_file_paths:
         output_dir = os.path.join(output_dir, os.path.basename(query_a) + '_kallisto')
-        kallisto_executable.append(output_dir)
+        kallisto_dirs.append(output_dir)
         cmd = [kallisto_executable, 'quant', '-i', k_index, '-o', output_dir,
                '-b', b, '-t', t, query_a, query_b]
     

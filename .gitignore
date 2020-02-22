@@ -4,6 +4,10 @@
 # ignore txt
 *.txt
 
+# ignore pyc and json
+*.pyc
+*.json
+
 # ignore unextended files
 *
 !/**/

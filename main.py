@@ -2,6 +2,7 @@ import os
 from get_args import get_args
 from data import run_wget, convert_to_fastq, get_paired_end_paths_as_lists, download_accession
 from kallisto import make_kalisto_index, run_kallisto
+from sleuth import make_sleuth_table
 
 def main():
 
@@ -24,6 +25,10 @@ def main():
     paired_fastqs = get_paired_end_paths_as_lists(args.q)
     
     kallisto_dirs = run_kallisto(args.k, paired_fastqs, args.o)
+    
+    sleuth_table = make_sleuth_table(kallisto_dirs, args.o)
+    
+    
     
     
     #print(args.q)
