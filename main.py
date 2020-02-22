@@ -32,7 +32,6 @@ def main():
         args.q = get_paired_paths_outer_dir(args.q)
     
     kallisto_dirs = run_kallisto(args.k, args.q, args.o)  # args.q now contains paired fastq reads
-    
     sleuth_table = make_sleuth_table(kallisto_dirs, args.o)
     
     

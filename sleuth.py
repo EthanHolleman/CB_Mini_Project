@@ -10,6 +10,12 @@ def default_conditions():
             'SRR5660044.1': '6dpi', 'SRR5660045.1': '6dpi'}
 
 
+def test_for_condition(condition_dict, path):
+    for key in condition_dict:
+        if key in path:
+            return key, condition_dict[key]
+
+
 def make_sleuth_table(kallisto_dirs, output_dir,
                       table_name='sleuth_table.csv', condition_dict=None):
     '''
@@ -25,10 +31,6 @@ def make_sleuth_table(kallisto_dirs, output_dir,
         writer = csv.writer(st)
         writer.writerow(['sample', 'condition', 'path'])
         for k_dir in kallisto_dirs:
-            print(k_dir)
-            SRA_name = k_dir.split('_')[-2].split('/')[1]
-            if SRA_name in condition_dict:
-                writer.writerow([SRA_name, condition_dict[SRA_name], k_dir])
-            else:
-                print(k_dir + ' not found making sleuth table')
+            sample, condition = test_for_condition(condition_dict, k_dir)
+            writer.writerow([sample, condition, k_dir])
     return sleuth_table
