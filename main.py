@@ -1,7 +1,7 @@
 import os
 from get_args import get_args
-from data import run_wget, convert_to_fastq, get_paired_end_paths_as_lists
-from kallisto import download_accession, make_kalisto_index, run_kallisto
+from data import run_wget, convert_to_fastq, get_paired_end_paths_as_lists, download_accession
+from kallisto import make_kalisto_index, run_kallisto
 
 def main():
 
