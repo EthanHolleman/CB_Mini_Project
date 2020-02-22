@@ -3,7 +3,7 @@ from get_args import get_args
 from data import run_wget, convert_to_fastq, get_paired_end_paths_as_lists, download_accession
 from data import get_paired_paths_outer_dir
 from kallisto import make_kalisto_index, run_kallisto
-from sleuth import make_sleuth_table
+from sleuth import make_sleuth_table, run_sleuth
 
 def main():
 
@@ -33,6 +33,11 @@ def main():
     
     kallisto_dirs = run_kallisto(args.k, args.q, args.o)  # args.q now contains paired fastq reads
     sleuth_table = make_sleuth_table(kallisto_dirs, args.o)
+    print('Running Sleuth')
+    sleuth_results = run_sleuth(sleuth_table, args.o)
+    
+    
+    
     
     
     # run the sleuth shit and write that to a place to read into by next functions

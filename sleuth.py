@@ -2,11 +2,17 @@
 # Will need to run R scripts from this file since sleuth is done in R
 # if graphs are a thing then need way to save those to png, jpeg etc.
 import os
+import subprocess
 import csv
 
 
 def run_sleuth(sleuth_table, output_dir, results_file_name='Sleuth_results.txt'):
-    pass
+    sleuth_results = os.path.join(output_dir, results_file_name)
+    cmd = ['Rscript', 'sleuth_R.R', '-f', sleuth_table, '-o', sleuth_results]
+    subprocess.call(cmd)
+    
+    return sleuth_results
+
 
 
 def default_conditions():
