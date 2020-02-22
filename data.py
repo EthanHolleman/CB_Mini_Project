@@ -60,6 +60,13 @@ def get_paired_end_paths_as_lists(fastq_dirs):
         paired_reads.append([os.path.join(fq_dir, f) for f in os.listdir(fq_dir)])
     return paired_reads
 
+def get_paired_paths_outer_dir(fastq_dir):
+    paired_reads = []
+    fastq_dirs = [os.path.join(fastq_dir, q) for q in os.listdir(fastq_dir)]  # get all fastq containing dirs
+    for fq_dir in fastq_dirs:
+        paired_reads.append([os.path.join(fq_dir, f) for f in os.listdir(fq_dir)])
+    return paired_reads
+
 def download_accession(output_dir, entrez_email='eholleman@luc.edu', dtype='cdna'):
     '''
     Use Biopython Entrez and SeqIO to first pull the transcriptome accession
@@ -92,3 +99,5 @@ def download_accession(output_dir, entrez_email='eholleman@luc.edu', dtype='cdna
         SeqIO.write(record, output_file, 'fasta')
 
         return output_file
+    
+    

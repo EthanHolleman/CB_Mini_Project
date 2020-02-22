@@ -25,9 +25,9 @@ def make_sleuth_table(kallisto_dirs, output_dir,
         writer = csv.writer(st)
         writer.writerow(['sample', 'condition', 'path'])
         for k_dir in kallisto_dirs:
-            SRA_name = k_dir.split('_')[0]
-            if k_dir.split('_')[0] in condition_dict:
-                writer.writerow(SRA_name, condition_dict[SRA_name], k_dir)
+            SRA_name = k_dir.split('_')[1].split('/')[1]
+            if SRA_name in condition_dict:
+                writer.writerow([SRA_name, condition_dict[SRA_name], k_dir])
             else:
                 print(k_dir + ' not found making sleuth table')
     return sleuth_table
