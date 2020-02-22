@@ -5,9 +5,13 @@ import os
 import csv
 
 
+def run_sleuth(sleuth_table, output_dir, results_file_name='Sleuth_results.txt'):
+    pass
+
+
 def default_conditions():
-    return {'SRR5660030.1': '2dpi', 'SRR5660033.1': '2dpi',
-            'SRR5660044.1': '6dpi', 'SRR5660045.1': '6dpi'}
+    return {'SRR5660030.1': '2dpi', 'SRR5660033.1': '6dpi',
+            'SRR5660044.1': '2dpi', 'SRR5660045.1': '6dpi'}
 
 
 def test_for_condition(condition_dict, path):
