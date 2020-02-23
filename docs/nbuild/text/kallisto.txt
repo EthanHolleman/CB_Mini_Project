@@ -1,0 +1,17 @@
+kallisto module
+***************
+
+kallisto.make_kalisto_index(trans_file, output_dir, kallisto_executable='kallisto')
+
+   Given a transcriptome fasta file and an output dir runs kallisto
+   via subprocess to create a new kallisto index from that fasta file.
+   Returns the path to the newly created kallisto index as a string.
+
+   TODO: Add way to access and edit the log file created when making
+   the Kalisto index.
+
+kallisto.run_kallisto(k_index, query_file_paths, output_dir, kallisto_executable='kallisto', b=30, t=4)
+
+   Given the path to a kallisto index and a list of query files takes
+   the query filepaths uses subprocess to run analysis using  kallisto
+   program.
