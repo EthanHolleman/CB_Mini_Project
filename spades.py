@@ -6,13 +6,14 @@ from Bio import SeqIO
 
 from data import get_files_from_parent
 
+
 def assemble_with_spades(input_file, output_dir, threads=4,
                          spades_executable='spades'):
     '''
     Reads in a list of fasta files and assembles using spades. Returns the
     output dir path. 
     '''
-   
+
     cmd = [spades_executable, '--12', input_file, '-k', '55,77,99,127', '-t', threads,
            '--only-assembler', '-o', output_dir]
     cmd = [str(c) for c in cmd]  # convert everything to string
@@ -20,12 +21,6 @@ def assemble_with_spades(input_file, output_dir, threads=4,
 
     return output_dir
 
-o = '/media/ethan/KINGSTON/kallisto_test/sam_files/'
-#t = '/media/ethan/KINGSTON/kallisto_test/sam_to_fasta/big_fasta.fa'
-
-#assemble_with_spades(t, o)
-
-# outputs a contigs and scaffolds fasta files in the output dir
 
 def assemble_sams_into_fasta(sam_files, output_dir, big_fasta_name='big_fasta.fa'):
     '''
@@ -44,13 +39,8 @@ def assemble_sams_into_fasta(sam_files, output_dir, big_fasta_name='big_fasta.fa
     big_fasta_name = os.path.join(output_dir, big_fasta_name)
     cmd_2 = ' '.join(['cat'] + fasta_names + ['>', big_fasta_name])
     subprocess.call(cmd_2, shell=True)
-    
-    return big_fasta_name
 
-sam_files = get_files_from_parent(o)
-print(sam_files)
-a= assemble_sams_into_fasta(sam_files, o)
-print(a)
+    return big_fasta_name
 
 
 def read_fasta_with_bio(fasta_file):
