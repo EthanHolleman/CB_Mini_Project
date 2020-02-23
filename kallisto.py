@@ -39,6 +39,3 @@ def make_kalisto_index(trans_file, output_dir, kallisto_executable='kallisto'):
     return output_file
 
 
-def get_kallisto_dir_paths(kallisto_parent_dir):
-    return [os.path.join(kallisto_parent_dir, d) for d in os.listdir(kallisto_parent_dir)]
-

@@ -38,6 +38,7 @@ def search_BTI(BTI, query_files, output_dir, sam_name='EF999921.sam', threads=4)
         query_file_len = get_fastq_length(read_a)
         output_file = os.path.join(output_dir, sam_name)
         output_files.append(output_file)
+        print('Running new Bowtie Search')
         cmd = ['bowtie2', '-x', BTI, '-1', read_a, '-2', read_b, '-S', output_file, '--threads', '4']
         subprocess.call(cmd)
 

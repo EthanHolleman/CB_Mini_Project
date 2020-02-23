@@ -13,6 +13,14 @@ def get_args():
         '-q', help='Path to coverted fastq files if already created')
     parse.add_argument(
         '-b', help='Path bowtie2 index if already created')
+    parse.add_argument(
+        '-s', help='Path to bowtie results if already ran')
+    parse.add_argument(
+        '-f', help='Path parent dir of fasta files from sam files')
+    parse.add_argument(
+        '-a', help='Path to assembled genome if exists')
+    parse.add_argument('-t', 'Number of threads')
+    
     parse = parse.parse_args()
 
     # output directory should be miniProject_Ethan_Holleman

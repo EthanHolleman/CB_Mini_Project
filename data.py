@@ -106,3 +106,7 @@ def download_accession(output_dir, entrez_email='eholleman@luc.edu', dtype='cdna
         SeqIO.write(record, output_file + '_genome', 'fasta')
 
         return output_file
+    
+    
+def get_files_from_parent(parent_dir):
+    return [os.path.join(parent_dir, d) for d in os.listdir(parent_dir)]
