@@ -4,6 +4,7 @@ from data import run_wget, convert_to_fastq, get_paired_end_paths_as_lists, down
 from data import get_paired_paths_outer_dir
 from kallisto import make_kalisto_index, run_kallisto
 from sleuth import make_sleuth_table, run_sleuth
+from bowtie import build_bowtie_index
 
 def main():
 
@@ -36,6 +37,12 @@ def main():
     print('Running Sleuth')
     sleuth_results = run_sleuth(sleuth_table, args.o)
     
+    complete_genome = download_accession(args.o, dtype='genome')
+    
+    if not args.b:
+        args.b = build_bowtie_index(complete_genome, args.o)
+    
+        
     
     
     

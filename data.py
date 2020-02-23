@@ -80,7 +80,7 @@ def download_accession(output_dir, entrez_email='eholleman@luc.edu', dtype='cdna
     'genome' it will download and return path to the complete genome of the 
     accession. Used for handing off to bowtie index maker. 
     '''
-    ACC = 'EF999921.1'
+    ACC = 'EF999921.1_{}'.format(dtype)
     output_file = os.path.join(output_dir, ACC)
     Entrez.email = entrez_email
     handle = Entrez.efetch(db="nucleotide", id=ACC,
