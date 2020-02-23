@@ -3,8 +3,10 @@ from get_args import get_args
 from data import run_wget, convert_to_fastq, get_paired_end_paths_as_lists, download_accession
 from data import get_paired_paths_outer_dir
 from kallisto import make_kalisto_index, run_kallisto
+from kallisto import get_kallisto_dir_paths
 from sleuth import make_sleuth_table, run_sleuth
 from bowtie import build_bowtie_index
+from bowtie import search_BTI
 
 def main():
 
@@ -32,8 +34,12 @@ def main():
     else:
         args.q = get_paired_paths_outer_dir(args.q)
     
-    kallisto_dirs = run_kallisto(args.k, args.q, args.o)  # args.q now contains paired fastq reads
-    sleuth_table = make_sleuth_table(kallisto_dirs, args.o)
+    if not args.r:
+        args.r = run_kallisto(args.k, args.q, args.o)
+    else:
+        args.r = get_kallisto_dir_paths(args.r)
+    
+    sleuth_table = make_sleuth_table(args.r, args.o)
     print('Running Sleuth')
     sleuth_results = run_sleuth(sleuth_table, args.o)
     
@@ -41,6 +47,8 @@ def main():
     
     if not args.b:
         args.b = build_bowtie_index(complete_genome, args.o)
+    
+    sam_files = search_BTI(args.b, args.q, args.o)
     
         
     

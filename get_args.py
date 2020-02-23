@@ -8,6 +8,7 @@ def get_args():
     parse.add_argument('-i', help='Input directory if files already \
                                   downloaded or for test data')
     parse.add_argument('-k', help='Path to kallisto index if already created')
+    parse.add_argument('-r', help='Path to kallisto ressults if already created')
     parse.add_argument(
         '-q', help='Path to coverted fastq files if already created')
     parse.add_argument(

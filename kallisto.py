@@ -31,13 +31,14 @@ def make_kalisto_index(trans_file, output_dir, kallisto_executable='kallisto'):
     Given a transcriptome fasta file and an output dir runs kallisto via
     subprocess to create a new kallisto index from that fasta file. Returns the
     path to the newly created kallisto index as a string.
-
-    TODO: Add way to access and edit the log file created when making the
-    Kalisto index.
-
     '''
     output_file = os.path.join(output_dir, 'mp_kalisto_index.idx')
     cmd = [kallisto_executable, 'index', '-i', output_file, trans_file,
            '--make-unique']
     subprocess.call(cmd)
     return output_file
+
+
+def get_kallisto_dir_paths(kallisto_parent_dir):
+    return [os.path.join(kallisto_parent_dir, d) for d in os.listdir(kallisto_parent_dir)]
+

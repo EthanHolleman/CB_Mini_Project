@@ -39,15 +39,17 @@ def convert_to_fastq(SRA_paths):
     for SRA in SRA_paths appends .fastq to the filenames.
     '''
     print('Converting files to fastq format')
-    
+
     # need to get paths to paired end files
     fastq_paths = []
     for SRA in SRA_paths:
         fastq_name = SRA + '_fastq'
         cmd = ['fastq-dump', SRA, '-O', fastq_name, '--split-files']
         subprocess.call(cmd)
-        fastq_paths.append(fastq_name)  # returns a directory with the paired end files
+        # returns a directory with the paired end files
+        fastq_paths.append(fastq_name)
     return fastq_paths
+
 
 def get_paired_end_paths_as_lists(fastq_dirs):
     '''
@@ -57,15 +59,20 @@ def get_paired_end_paths_as_lists(fastq_dirs):
     '''
     paired_reads = []
     for fq_dir in fastq_dirs:
-        paired_reads.append([os.path.join(fq_dir, f) for f in os.listdir(fq_dir)])
+        paired_reads.append([os.path.join(fq_dir, f)
+                             for f in os.listdir(fq_dir)])
     return paired_reads
+
 
 def get_paired_paths_outer_dir(fastq_dir):
     paired_reads = []
-    fastq_dirs = [os.path.join(fastq_dir, q) for q in os.listdir(fastq_dir)]  # get all fastq containing dirs
+    fastq_dirs = [os.path.join(fastq_dir, q) for q in os.listdir(
+        fastq_dir)]  # get all fastq containing dirs
     for fq_dir in fastq_dirs:
-        paired_reads.append([os.path.join(fq_dir, f) for f in os.listdir(fq_dir)])
+        paired_reads.append([os.path.join(fq_dir, f)
+                             for f in os.listdir(fq_dir)])
     return paired_reads
+
 
 def download_accession(output_dir, entrez_email='eholleman@luc.edu', dtype='cdna'):
     '''
@@ -75,29 +82,27 @@ def download_accession(output_dir, entrez_email='eholleman@luc.edu', dtype='cdna
     make_kalisto_index function. Returns the absolute path to the 
     accession fasta file as a string and the number of coding sequences 
     as an int both in a tuple. 
-    
+
     Download accession also works in another mode. By setting the dtype arg to 
     'genome' it will download and return path to the complete genome of the 
     accession. Used for handing off to bowtie index maker. 
     '''
-    ACC = 'EF999921.1_{}'.format(dtype)
+    ACC = 'EF999921.1'
     output_file = os.path.join(output_dir, ACC)
     Entrez.email = entrez_email
     handle = Entrez.efetch(db="nucleotide", id=ACC,
                            rettype="gb", retmode="text")
     #  fetch the accession
     record = SeqIO.read(handle, 'genbank')
-    
+
     if dtype == 'cdna':
         record.features = [f for f in record.features if f.type == "CDS"]
         num_cds = len(record.features)
         seq_recs = [r.extract(record) for r in record.features]
-        SeqIO.write(seq_recs, output_file, 'fasta')
-        
+        SeqIO.write(seq_recs, output_file + '_cdna', 'fasta')
+
         return output_file, num_cds
     elif dtype == 'genome':
-        SeqIO.write(record, output_file, 'fasta')
+        SeqIO.write(record, output_file + '_genome', 'fasta')
 
         return output_file
-    
-    
