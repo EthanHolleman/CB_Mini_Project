@@ -38,6 +38,7 @@ def assemble_sams_into_fasta(sam_files, output_dir, big_fasta_name='big_fasta.fa
         fasta_names.append(fasta_name)
     big_fasta_name = os.path.join(output_dir, big_fasta_name)
     cmd_2 = ' '.join(['cat'] + fasta_names + ['>', big_fasta_name])
+    print(cmd_2)
     subprocess.call(cmd_2, shell=True)
 
     return big_fasta_name

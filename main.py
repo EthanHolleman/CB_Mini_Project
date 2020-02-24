@@ -55,9 +55,7 @@ def main():
         args.s = get_files_from_parent(args.t)
     
     if not args.f:
-        args.f = assemble_sams_into_fasta(args.t, args.o)
-    else:
-        args.f = get_files_from_parent(args.f)
+        args.f = assemble_sams_into_fasta(args.s, args.o)
     
     if not args.a:
         args.a = assemble_with_spades(args.f, args.o, args.t)
