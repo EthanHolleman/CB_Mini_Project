@@ -52,7 +52,7 @@ def main():
     if not args.s:
         args.s = search_BTI(args.b, args.q, args.o, threads=args.t)
     else:
-        args.s = get_files_from_parent(args.t)
+        args.s = get_files_from_parent(args.s)
     
     if not args.f:
         args.f = assemble_sams_into_fasta(args.s, args.o)
