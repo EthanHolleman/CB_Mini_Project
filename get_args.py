@@ -19,7 +19,7 @@ def get_args():
         '-f', help='Path parent dir of fasta files from sam files')
     parse.add_argument(
         '-a', help='Path to assembled genome if exists')
-    parse.add_argument('-t', 'Number of threads')
+    parse.add_argument('-t', help='Number of threads')
     
     parse = parse.parse_args()
 
