@@ -4,6 +4,7 @@ import os
 
 from Bio import SeqIO
 from Bio.Seq import Seq
+from data import if_not_dir_make
 
 
 def build_bowtie_index(input_file, output_dir, index_name='MP_BTI'):
@@ -11,12 +12,14 @@ def build_bowtie_index(input_file, output_dir, index_name='MP_BTI'):
     Given an index name, input fasta file and an output path creates
     a new bowtie2 index and returns the path to that index for querying.
     '''
-    BTI = os.path.join(output_dir, index_name)
+    BT_path = if_not_dir_make(output_dir, index_name)
+    index_path = os.path.join(BT_path, index_name)
+          
     print('Building Bowtie Index')
-    cmd = ['bowtie2-build', input_file, BTI]
+    cmd = ['bowtie2-build', input_file, index_path]
     subprocess.call(cmd)
 
-    return BTI
+    return index_path
 
 
 def search_BTI(BTI, query_files, output_dir, sam_name='EF999921.sam', threads=4):
@@ -29,7 +32,9 @@ def search_BTI(BTI, query_files, output_dir, sam_name='EF999921.sam', threads=4)
     (fasta format) to the index and writes the allignment SAM file to the
     output dir.
     '''
-
+    output_dir = if_not_dir_make(output_dir, 'bowtie_results')
+    
+    
     output_files = []
     for read_a, read_b in query_files:
         sam_name = os.path.basename(read_a) + '.sam'
@@ -40,7 +45,7 @@ def search_BTI(BTI, query_files, output_dir, sam_name='EF999921.sam', threads=4)
         subprocess.call(cmd)
         fasta_file = convert_sam_to_fasta(sam_name)
         output_file.append(fasta_file)
-        log_string = make_read_comparison_string(sam_name, fast)
+        log_string = make_read_comparison_string(sam_name, fasta_file)
 
     return output_files
 
@@ -77,6 +82,3 @@ def get_fastx_length(fastx, t='q'):
         return int(lines) / 4   # if fastq 4 lines per entry
     elif t == 'a':
         return int(lines) / 2  # fasta 2 lines per entry
-
-
-print(make_read_comparison_string(i, p))

@@ -12,6 +12,13 @@ URLS = ['https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR566
         'https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR5660045/SRR5660045.1']
 
 
+def if_not_dir_make(parent_dir, dir_name):
+    full_dir = os.path.join(parent_dir, dir_name)
+    if not os.path.isdir(full_dir):
+        os.mkdir(full_dir)
+    return full_dir
+
+
 def run_wget(output_dir, urls=URLS):
     '''
     Given a list of valid urls (file locations) uses subprocess to run wget
@@ -30,7 +37,7 @@ def run_wget(output_dir, urls=URLS):
     return paths
 
 
-def convert_to_fastq(SRA_paths):
+def convert_to_fastq(SRA_paths, output_dir):
     '''
     Given a list of paths so SRA_paths that should have been downloaded using
     the run_wget function uses fastq-dump command line program through 
@@ -39,11 +46,13 @@ def convert_to_fastq(SRA_paths):
     for SRA in SRA_paths appends .fastq to the filenames.
     '''
     print('Converting files to fastq format')
+    
+    output_dir = if_not_dir_make(output_dir, 'SRA_to_fastq')
 
     # need to get paths to paired end files
     fastq_paths = []
     for SRA in SRA_paths:
-        fastq_name = SRA + '_fastq'
+        fastq_name = os.path.join(output_dir, os.path.basename(SRA) + '.fastq')
         cmd = ['fastq-dump', SRA, '-O', fastq_name, '--split-files']
         subprocess.call(cmd)
         # returns a directory with the paired end files
@@ -110,3 +119,5 @@ def download_accession(output_dir, entrez_email='eholleman@luc.edu', dtype='cdna
     
 def get_files_from_parent(parent_dir):
     return [os.path.join(parent_dir, d) for d in os.listdir(parent_dir)]
+
+  
