@@ -6,12 +6,13 @@ from kallisto import make_kalisto_index, run_kallisto
 from sleuth import make_sleuth_table, run_sleuth
 from bowtie import build_bowtie_index
 from bowtie import search_BTI
-from spades import assemble_sams_into_fasta
+from spades import make_big_fasta
 from spades import assemble_with_spades
 
 def main():
 
     args = get_args()
+    log = os.path.join(args.o, 'log.txt')
     
     if not args.q:  # dont need paths to SRA files if already have fastq
         if args.i:  # already have the input files
@@ -52,10 +53,10 @@ def main():
     if not args.s:
         args.s = search_BTI(args.b, args.q, args.o, threads=args.t)
     else:
-        args.s = get_files_from_parent(args.s)
+        args.s = get_files_from_parent(args.s)  # these are sam files
     
-    if not args.f:
-        args.f = assemble_sams_into_fasta(args.s, args.o)
+    if not args.f:  # if given would still need to convert them
+        args.f = make_big_fasta(args.s, args.o)
     
     if not args.a:
         args.a = assemble_with_spades(args.f, args.o, args.t)

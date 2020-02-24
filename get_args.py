@@ -19,7 +19,8 @@ def get_args():
         '-f', help='Path to big fasta file')
     parse.add_argument(
         '-a', help='Path to assembled genome if exists')
-    parse.add_argument('-t', help='Number of threads')
+    parse.add_argument('-t', defualt=2, help='Number of threads')
+    parse.add_argument('-l', 'path to write log file to')
     
     parse = parse.parse_args()
 
