@@ -16,7 +16,7 @@ def get_args():
     parse.add_argument(
         '-s', help='Path to bowtie results if already ran')
     parse.add_argument(
-        '-f', help='Path parent dir of fasta files from sam files')
+        '-f', help='Path to big fasta file')
     parse.add_argument(
         '-a', help='Path to assembled genome if exists')
     parse.add_argument('-t', help='Number of threads')
