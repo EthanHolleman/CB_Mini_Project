@@ -11,6 +11,7 @@ URLS = ['https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR566
         'https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR5660044/SRR5660044.1',
         'https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR5660045/SRR5660045.1']
 
+# store urls in a constant 
 
 def run_wget(output_dir, urls=URLS):
     '''
@@ -65,6 +66,11 @@ def get_paired_end_paths_as_lists(fastq_dirs):
 
 
 def get_paired_paths_outer_dir(fastq_dir):
+    '''
+    Given a parent dir that contains seperate dirs for each set of
+    paired end reads returns a list of lists where each sublist contains the
+    two paired end fastq files.
+    '''
     paired_reads = []
     fastq_dirs = [os.path.join(fastq_dir, q) for q in os.listdir(
         fastq_dir)]  # get all fastq containing dirs
@@ -74,7 +80,8 @@ def get_paired_paths_outer_dir(fastq_dir):
     return paired_reads
 
 
-def download_accession(output_dir, entrez_email='eholleman@luc.edu', dtype='cdna'):
+def download_accession(output_dir, entrez_email='eholleman@luc.edu',
+                       dtype='cdna'):
     '''
     Use Biopython Entrez and SeqIO to first pull the transcriptome accession
     from genbank(nucleotide database) and then write the records in the
@@ -95,18 +102,23 @@ def download_accession(output_dir, entrez_email='eholleman@luc.edu', dtype='cdna
     #  fetch the accession
     record = SeqIO.read(handle, 'genbank')
 
-    if dtype == 'cdna':
+    if dtype == 'cdna':  # for just coding sequences
         record.features = [f for f in record.features if f.type == "CDS"]
-        num_cds = len(record.features)
+        num_cds = len(record.features)  # store for log
         seq_recs = [r.extract(record) for r in record.features]
         SeqIO.write(seq_recs, output_file + '_cdna', 'fasta')
 
         return output_file, num_cds
-    elif dtype == 'genome':
+    elif dtype == 'genome':  # for whole genome 
         SeqIO.write(record, output_file + '_genome', 'fasta')
 
         return output_file
     
     
 def get_files_from_parent(parent_dir):
+    '''
+    General helper function to return the absolute paths of all files in
+    a parent directory. Used for passing in directory of files instead of
+    the individual file paths.
+    '''
     return [os.path.join(parent_dir, d) for d in os.listdir(parent_dir)]

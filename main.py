@@ -42,7 +42,7 @@ def main():
     
     sleuth_table = make_sleuth_table(args.r, args.o)
     print('Running Sleuth')
-    sleuth_results = run_sleuth(sleuth_table, args.o)
+    #sleuth_results = run_sleuth(sleuth_table, args.o)
     
     complete_genome = download_accession(args.o, dtype='genome')
     #complete_genome = '/media/ethan/KINGSTON/kallisto_test/EF999921.1_genome'
@@ -62,38 +62,6 @@ def main():
     if not args.a:
         args.a = assemble_with_spades(args.f, args.o, args.t)
         
-        
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    # run the sleuth shit and write that to a place to read into by next functions
-    
-    
-    
-    
-    #print(args.q)
-
-    #args.q = get_paired_end_paths_as_lists(args.i)
-    
-    #run_kallisto(args.k, args.q, args.o)
-    # run kallisto program on all fastq files need to look into passing
-    # args into this for keeping track of what files go with what
-    # maybe include some type of config file to do this?
-
-    # kallisto index is made and files are ready to go at this point
-    # issue if already have index donesnt download the
-    # need to write below to log file
-    # The HCMV genome (EF99921) has #CDS
-
 
 if __name__ == '__main__':
     main()

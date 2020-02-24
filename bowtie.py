@@ -18,38 +18,37 @@ def build_bowtie_index(input_file, output_dir, index_name='MP_BTI'):
 
     return BTI
 
-# need to do a paired end search
 
-
-def search_BTI(BTI, query_files, output_dir, sam_name='EF999921.sam', threads=4):
+def search_BTI(BTI, query_files, output_dir, threads=4):
     '''
     Given a bowtie2 index and a list of list of paired end reads
     where each sublist has the paired reads. Alligns the reads
-    against the bowtie index and then converts to fastq format.
-    
-    a query file alligns sequnces in the query file
-    (fasta format) to the index and writes the allignment SAM file to the
-    output dir.
+    against the bowtie index. Results are returned as a sam file to the
+    location given by the output_dir variable.
     '''
-
     output_files = []
     for read_a, read_b in query_files:
         sam_name = os.path.basename(read_a) + '.sam'
-        query_file_len = get_fastq_length(read_a)
+        query_file_len = get_fastq_length(
+            read_a)  # store len for writing to log
         output_file = os.path.join(output_dir, sam_name)
-        output_files.append(output_file)
+        output_files.append(output_file)  # store path to output
         print('Running new Bowtie Search')
-        cmd = ['bowtie2', '-x', BTI, '-1', read_a, '-2', read_b, '-S', output_file, '--threads', '4']
+        cmd = ['bowtie2', '-x', BTI, '-1', read_a, '-2',
+               read_b, '-S', output_file, '--threads', '4']
         subprocess.call(cmd)
 
     return output_files
 
 
-r = '/media/ethan/KINGSTON/kallisto_test/SRA_to_fastq/SRR5660044.1_fastq/SRR5660044.1_2.fastq'
-
-
 def get_fastq_length(fastq):
+    '''
+    Helper command that uses wc -l to get the number of entries in a fastq
+    file. Each entry should have four lines so divides the results of the
+    wc call by 4 to get the number of entries. Paired end read files should
+    have the same number of entries so only needs to be called on one of the
+    mates.
+    '''
     cmd = ['wc', '-l', fastq]
     call = check_output(cmd)
-    return call.decode('utf-8').split(' ')[0]
-
+    return int(call.decode('utf-8').split(' ')[0]) / 4

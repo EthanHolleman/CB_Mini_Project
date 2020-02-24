@@ -34,16 +34,23 @@ def assemble_sams_into_fasta(sam_files, output_dir, big_fasta_name='big_fasta.fa
     for sam in sam_files:
         fasta_name = sam + '.fna'
         cmd = ' '.join(['samtools', 'fasta', sam, '>', fasta_name])
-        subprocess.call(cmd, shell=True)
+        subprocess.call(cmd, shell=True)  # nonshell calls were not working ??
         fasta_names.append(fasta_name)
     big_fasta_name = os.path.join(output_dir, big_fasta_name)
     cmd_2 = ' '.join(['cat'] + fasta_names + ['>', big_fasta_name])
+    # cat all sam->fasta files into one big fasta file. Paired end reads will
+    # be interleaved so use --12 arg with spades
     subprocess.call(cmd_2, shell=True)
 
-    return big_fasta_name
+    return big_fasta_name  # return path to big fasta file
 
 
 def read_fasta_with_bio(fasta_file):
+    '''
+    Helper function that uses biopyton to return a parsed fasta object
+    for easier manipulating and to create the long concatinated contig
+    string required for blasting later on in the pipeline.
+    '''
     return SeqIO.parse(fasta_file, 'fasta')
 
 

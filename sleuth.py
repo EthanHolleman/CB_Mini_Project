@@ -1,12 +1,15 @@
-# File to handle running and parsing all sleuth operations
-# Will need to run R scripts from this file since sleuth is done in R
-# if graphs are a thing then need way to save those to png, jpeg etc.
 import os
 import subprocess
 import csv
 
 
 def run_sleuth(sleuth_table, output_dir, results_file_name='Sleuth_results.txt'):
+    '''
+    Given a sleuth table and an output dir run the sleuth_R.R script
+    to execute differntial expression analysis via the sleuth R package.
+    The sleuth table should be created from the make_sleuth_table function
+    if it does not already exist. Returns path to the sleuth results.
+    '''
     sleuth_results = os.path.join(output_dir, results_file_name)
     cmd = ['Rscript', 'sleuth_R.R', '-f', sleuth_table, '-o', sleuth_results]
     subprocess.call(cmd)
@@ -16,14 +19,24 @@ def run_sleuth(sleuth_table, output_dir, results_file_name='Sleuth_results.txt')
 
 
 def default_conditions():
+    '''
+    Returns a dictionary of sample conditions based on the project URLs.
+    2dpi = group1 and 6dpi = group2.
+    '''
     return {'SRR5660030.1': '2dpi', 'SRR5660033.1': '6dpi',
             'SRR5660044.1': '2dpi', 'SRR5660045.1': '6dpi'}
 
 
 def test_for_condition(condition_dict, path):
-    for key in condition_dict:
+    '''
+    Helper function to test if the string corresponding to a condition is
+    present in a file path using the condition dictionary. This is to ensure
+    proper assignment of condtions to kallisto results so they are not
+    mixed up when handed off to sleuth in the form of the sleuth table.
+    '''
+    for key in condition_dict:  # iterate all keys see if in path
         if key in path:
-            return key, condition_dict[key]
+            return key, condition_dict[key]  # return key + condition type
 
 
 def make_sleuth_table(kallisto_dirs, output_dir,
