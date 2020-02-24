@@ -16,7 +16,10 @@ def run_sleuth(sleuth_table, output_dir, results_file_name='Sleuth_results.txt')
     
     return sleuth_results
 
-
+def write_results_to_log(sleuth_results, log):  # need to see the format these come out in 
+    HEADER = 'TARGET_id, test_stat, pval, qval\n'
+    log.write(HEADER)
+    
 
 def default_conditions():
     '''

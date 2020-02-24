@@ -21,10 +21,15 @@ def get_args():
         '-f', help='Path to big fasta file')
     parse.add_argument(
         '-a', help='Path to assembled genome if exists')
-    parse.add_argument('-t', defualt=2, help='Number of threads')
-    parse.add_argument('-l', 'path to write log file to')
+    parse.add_argument('-t', default=2, help='Number of threads')
+    parse.add_argument('-l', help='path to write log file to')
+    
     
     parse = parse.parse_args()
+    if not parse.o or not parse.l:
+        print('Please provide a log and output paths')
+        sys.exit(1)
+    
 
     # output directory should be miniProject_Ethan_Holleman
 

@@ -6,6 +6,11 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from data import if_not_dir_make
 
+from sleuth import default_conditions, test_for_condition
+
+DONOR_DICT = {'SRR5660030.1': 'Donor 1', 'SRR5660033.1': 'Donor 1',
+              'SRR5660044.1': 'Donor 3', 'SRR5660045.1': 'Donor 3'}
+
 
 def build_bowtie_index(input_file, output_dir, index_name='MP_BTI'):
     '''
@@ -21,7 +26,7 @@ def build_bowtie_index(input_file, output_dir, index_name='MP_BTI'):
 
     return index_path
 
-def search_BTI(BTI, query_files, output_dir, threads=4):
+def search_BTI(BTI, query_files, output_dir, log, threads=4):
     '''
     Given a bowtie2 index and a list of list of paired end reads
     where each sublist has the paired reads. Alligns the reads
@@ -31,6 +36,7 @@ def search_BTI(BTI, query_files, output_dir, threads=4):
     (fasta format) to the index and writes the allignment SAM file to the
     output dir.
     '''
+    cond_dict = default_conditions()  # use to test for which condition
     output_dir = if_not_dir_make(output_dir, 'bowtie_results')
     
     
@@ -38,13 +44,21 @@ def search_BTI(BTI, query_files, output_dir, threads=4):
     for read_a, read_b in query_files:
         sam_name = os.path.basename(read_a) + '.sam'
         output_file = os.path.join(output_dir, sam_name)
+        
+        sample, date = test_for_condition(cond_dict, read_a)
+        donor = DONOR_DICT[sample]
+        
         print('Running new Bowtie Search')
         cmd = ['bowtie2', '-x', BTI, '-1', read_a, '-2',
-               read_b, '-S', output_file, '--threads', '4']
+               read_b, '-S', output_file, '--threads', '4', '--no-discordant', 
+               '--no-unal', '--no-mixed']
+        print(' '.join(cmd))
         subprocess.call(cmd)
-        fasta_file = convert_sam_to_fasta(sam_name)
-        output_file.append(fasta_file)
-        log_string = make_read_comparison_string(sam_name, fasta_file)
+        fasta_file = convert_sam_to_fasta(output_file)
+        output_files.append(fasta_file)
+        log_string = make_read_comparison_string(read_a, fasta_file, donor, date)
+        log.write(log_string + '\n')
+        print(log_string)
 
     return output_files
 
@@ -61,7 +75,7 @@ def convert_sam_to_fasta(sam_file):
     return fasta_name
 
 
-def make_read_comparison_string(intial, postBT):
+def make_read_comparison_string(intial, postBT, donor, date):
     '''
     Given a fastq file before alignment using bowtie counts the
     number of reads in that file and in the fasta file created
@@ -70,7 +84,8 @@ def make_read_comparison_string(intial, postBT):
     ''' 
     # divide by 2 again becuase interlaced paired ends
     i, p = get_fastx_length(intial), get_fastx_length(postBT, 'a') / 2
-    return '{} had {} reads and after alignment has {}'.format(intial, i, p)
+    return '{} ({}) had {} reads pairs before Bowtie2 filtering and \
+            {} read pairs after.'.format(donor, date, i, p.strip())
 
 
 def get_fastx_length(fastx, t='q'):

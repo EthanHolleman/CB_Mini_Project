@@ -28,6 +28,8 @@ def run_wget(output_dir, urls=URLS):
     (everything after the last /). Returns a list of absoulte paths to the
     downloaded files as a list. 
     '''
+    output_dir = if_not_dir_make(output_dir, 'SRA')
+    
     paths = []
     for url in urls:
         p = os.path.join(output_dir, os.path.basename(url))
@@ -89,7 +91,7 @@ def get_paired_paths_outer_dir(fastq_dir):
     return paired_reads
 
 
-def download_accession(output_dir, entrez_email='eholleman@luc.edu',
+def download_accession(output_dir, log, entrez_email='eholleman@luc.edu',
                        dtype='cdna'):
     '''
     Use Biopython Entrez and SeqIO to first pull the transcriptome accession
@@ -113,15 +115,16 @@ def download_accession(output_dir, entrez_email='eholleman@luc.edu',
 
     if dtype == 'cdna':  # for just coding sequences
         record.features = [f for f in record.features if f.type == "CDS"]
-        num_cds = len(record.features)  # store for log
+        log.write('The HCMV Genome (EF999921) has {} # CDS\n'.format(len(record.features)))
+        # write number of cds to the log file
         seq_recs = [r.extract(record) for r in record.features]
         SeqIO.write(seq_recs, output_file + '_cdna', 'fasta')
 
-        return output_file, num_cds
+        return output_file + '_cdna'
     elif dtype == 'genome':  # for whole genome 
         SeqIO.write(record, output_file + '_genome', 'fasta')
 
-        return output_file
+        return output_file + '_genome'
     
     
 def get_files_from_parent(parent_dir):

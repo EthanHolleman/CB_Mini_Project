@@ -2,6 +2,8 @@ import subprocess
 import os
 import csv
 
+from data import if_not_dir_make
+
 
 def run_kallisto(k_index, query_file_paths, output_dir, 
                  kallisto_executable='kallisto', b=30, t=4):
@@ -10,6 +12,7 @@ def run_kallisto(k_index, query_file_paths, output_dir,
     takes the query filepaths uses subprocess to run analysis using 
     kallisto program. 
     '''
+    output_dir = if_not_dir_make(output_dir, 'kallisto_results')
     kallisto_dirs = []
     for query_a, query_b in query_file_paths:  # iterate by paired fastq
         results_dir = os.path.join(output_dir,  # result dir based on query a
@@ -30,6 +33,7 @@ def make_kalisto_index(trans_file, output_dir, kallisto_executable='kallisto',
     subprocess to create a new kallisto index from that fasta file. Returns the
     path to the newly created kallisto index as a string.
     '''
+    output_dir = if_not_dir_make(output_dir, 'Kallisto_Index')
     output_file = os.path.join(output_dir, kalliso_index_name)
     cmd = [kallisto_executable, 'index', '-i', output_file, trans_file,
            '--make-unique']
