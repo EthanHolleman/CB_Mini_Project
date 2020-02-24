@@ -18,12 +18,12 @@ def get_args():
     parse.add_argument(
         '-s', help='Path to bowtie results if already ran')
     parse.add_argument(
-        '-f', help='Path parent dir of fasta files from sam files')
+        '-f', help='Path to big fasta file')
     parse.add_argument(
         '-a', help='Path to assembled genome if exists')
-    parse.add_argument('-t', 'Path to log file, if already exists will be \
-                       overwritten if not will be created')
-
+    parse.add_argument('-t', defualt=2, help='Number of threads')
+    parse.add_argument('-l', 'path to write log file to')
+    
     parse = parse.parse_args()
 
     # output directory should be miniProject_Ethan_Holleman
