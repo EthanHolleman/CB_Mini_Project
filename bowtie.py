@@ -85,7 +85,7 @@ def make_read_comparison_string(intial, postBT, donor, date):
     # divide by 2 again becuase interlaced paired ends
     i, p = get_fastx_length(intial), get_fastx_length(postBT, 'a') / 2
     return '{} ({}) had {} reads pairs before Bowtie2 filtering and \
-            {} read pairs after.'.format(donor, date, i, p.strip())
+            {} read pairs after.'.format(donor, date, i, p)
 
 
 def get_fastx_length(fastx, t='q'):

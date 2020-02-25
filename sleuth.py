@@ -3,7 +3,7 @@ import subprocess
 import csv
 
 
-def run_sleuth(sleuth_table, output_dir, results_file_name='Sleuth_results.txt'):
+def run_sleuth(sleuth_table, output_dir, log, results_file_name='Sleuth_results.txt'):
     '''
     Given a sleuth table and an output dir run the sleuth_R.R script
     to execute differntial expression analysis via the sleuth R package.
@@ -14,11 +14,22 @@ def run_sleuth(sleuth_table, output_dir, results_file_name='Sleuth_results.txt')
     cmd = ['Rscript', 'sleuth_R.R', '-f', sleuth_table, '-o', sleuth_results]
     subprocess.call(cmd)
     
+    write_results_to_log(sleuth_results, log)
+    
     return sleuth_results
 
 def write_results_to_log(sleuth_results, log):  # need to see the format these come out in 
     HEADER = 'TARGET_id, test_stat, pval, qval\n'
+    log_sleuth = []
+    with open(sleuth_results) as sr:
+        reader = csv.reader(sr, delimiter=' ')
+        next(reader)  # skip the header row
+        for row in reader:
+            log_sleuth.append([row[0], row[3], row[1], row[2]])
+    writer = csv.writer(log)
     log.write(HEADER)
+    writer.writerow(log_sleuth)
+            
     
 
 def default_conditions():
