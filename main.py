@@ -60,8 +60,8 @@ def main():
     if not args.f:  # if given would still need to convert them
         args.f = make_big_fasta(args.s, args.o)
     log.close()
-    #if not args.a:
-     #   args.a = assemble_with_spades(args.f, args.o, args.t)
+    if not args.a:
+       args.a = assemble_with_spades(args.f, args.o, args.t)
         
 
 if __name__ == '__main__':
