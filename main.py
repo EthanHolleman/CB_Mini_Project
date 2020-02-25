@@ -67,8 +67,9 @@ def main():
     
     
     write_assembly_stats(args.a, log)  # pass in contigs file path and write stats to log
-    
-    run_and_write_blast(concat_contigs(args.a), log)
+    cat = concat_contigs(args.a)
+    print(cat)
+    run_and_write_blast(cat, log)
     
     
         
