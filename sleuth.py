@@ -28,7 +28,7 @@ def write_results_to_log(sleuth_results, log):  # need to see the format these c
             log_sleuth.append([row[0], row[3], row[1], row[2]])
     writer = csv.writer(log)
     log.write(HEADER)
-    writer.writerow(log_sleuth)
+    writer.writerows(sleuth_results)
             
     
 
