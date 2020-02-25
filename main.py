@@ -1,15 +1,17 @@
 import os
+import sys
+
+from bowtie import build_bowtie_index, search_BTI
+from data import (convert_to_fastq, download_accession, get_files_from_parent,
+                  get_paired_end_paths_as_lists, get_paired_paths_outer_dir,
+                  run_wget)
 from get_args import get_args
-from data import run_wget, convert_to_fastq, get_paired_end_paths_as_lists, download_accession
-from data import get_paired_paths_outer_dir, get_files_from_parent
 from kallisto import make_kalisto_index, run_kallisto
 from sleuth import make_sleuth_table, run_sleuth
-from bowtie import build_bowtie_index
-from bowtie import search_BTI
-from spades import make_big_fasta
-from spades import assemble_with_spades
+from spades import assemble_with_spades, make_big_fasta, concat_contigs
+from spades import write_assembly_stats
+from qBLAST import run_and_write_blast
 
-import sys
 
 def main():
 
@@ -62,6 +64,13 @@ def main():
     log.close()
     if not args.a:
        args.a = assemble_with_spades(args.f, args.o, args.t)
+    
+    
+    write_assembly_stats(args.a, log)  # pass in contigs file path and write stats to log
+    
+    run_and_write_blast(concat_contigs(args.a), log)
+    
+    
         
 
 if __name__ == '__main__':

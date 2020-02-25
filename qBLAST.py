@@ -8,6 +8,12 @@ from Bio.Seq import Seq
 # run all blasting operations from this file
 
 
+def run_and_write_blast(query, log):
+    xml_file = run_blast(query)
+    top_results = get_top_ten_results(xml_file)
+    write_top_hits(top_results, log)
+
+
 def run_blast(seq_object):
     '''
     Given a string of a seq object blasts against nucleotide database
@@ -33,18 +39,14 @@ def get_top_ten_results(xml_file):
         for hsp in alignment.hsps:
             if i == 0:
                 top_hits.append([alignment.title, alignment.length,
-                                hsp.num_alignments, hsp.identities,
-                                hsp.gaps, hsp.bits, hsp.expect])
+                                 hsp.num_alignments, hsp.identities,
+                                 hsp.gaps, hsp.bits, hsp.expect])
             else:
                 top_hits.append([alignment.title, alignment.length])
     return top_hits
 
 
-def write_top_hits(top_hits, out_dir, file_name='top_10.tsv'):  # probably want to replace this with log file name
-    outfile = os.path.join(out_dir, file_name)
-    with open(outfile, 'w') as of:
-        writer = csv.writer(of, delimiter='\t')
-        for row in top_hits:
-            writer.writerow(row)
-    return outfile
-
+def write_top_hits(top_hits, log):  # probably want to replace this with log file name
+    writer = csv.writer(log, delimiter='\t')
+    for row in top_hits:
+        writer.writerow(row)
