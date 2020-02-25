@@ -63,9 +63,6 @@ def count_length_assembly(fasta_file):
     return sum([len(r.seq) for r in records])
 
 
-f = '/home/ethan/Documents/spades_contigs/contigs.fasta'
-
-
 def concat_contigs(fasta_file, min_length=1000):
     '''
     Given a fasta file concatinated all the sequences with length greater than

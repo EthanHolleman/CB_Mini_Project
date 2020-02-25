@@ -13,12 +13,14 @@ def run_sleuth(sleuth_table, output_dir, log, results_file_name='Sleuth_results.
     sleuth_results = os.path.join(output_dir, results_file_name)
     cmd = ['Rscript', 'sleuth_R.R', '-f', sleuth_table, '-o', sleuth_results]
     subprocess.call(cmd)
-    
+
     write_results_to_log(sleuth_results, log)
-    
+
     return sleuth_results
 
-def write_results_to_log(sleuth_results, log):  # need to see the format these come out in 
+
+# need to see the format these come out in
+def write_results_to_log(sleuth_results, log):
     HEADER = 'TARGET_id, test_stat, pval, qval\n'
     log_sleuth = []
     with open(sleuth_results) as sr:
@@ -28,9 +30,8 @@ def write_results_to_log(sleuth_results, log):  # need to see the format these c
             log_sleuth.append([row[0], row[3], row[1], row[2]])
     writer = csv.writer(log)
     log.write(HEADER)
-    writer.writerows(sleuth_results)
-            
-    
+    writer.writerows(log_sleuth)
+
 
 def default_conditions():
     '''
