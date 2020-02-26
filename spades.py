@@ -5,6 +5,7 @@ from Bio.Seq import Seq
 from Bio import SeqIO
 
 from data import get_files_from_parent
+from data import if_not_dir_make
 
 
 def assemble_with_spades(input_file, output_dir, threads=4,
@@ -13,7 +14,7 @@ def assemble_with_spades(input_file, output_dir, threads=4,
     Reads in a list of fasta files and assembles using spades. Returns the
     path to the contigs file. 
     '''
-
+    output_dir = if_not_dir_make(output_dir, 'SPAdes')
     cmd = [spades_executable, '--12', input_file, '-k', '55,77,99,127', '-t', threads,
            '--only-assembler', '-o', output_dir]
     cmd = [str(c) for c in cmd]  # convert everything to string
