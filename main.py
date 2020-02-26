@@ -7,10 +7,10 @@ from data import (convert_to_fastq, download_accession, get_files_from_parent,
                   run_wget)
 from get_args import get_args
 from kallisto import make_kalisto_index, run_kallisto
-from sleuth import make_sleuth_table, run_sleuth
-from spades import assemble_with_spades, make_big_fasta, concat_contigs
-from spades import write_assembly_stats
 from qBLAST import run_and_write_blast
+from sleuth import make_sleuth_table, run_sleuth
+from spades import (assemble_with_spades, concat_contigs, make_big_fasta,
+                    write_assembly_stats)
 
 
 def main():
@@ -68,7 +68,6 @@ def main():
     
     write_assembly_stats(args.a, log)  # pass in contigs file path and write stats to log
     cat = concat_contigs(args.a)
-    print(cat)
     run_and_write_blast(cat, args.o, log)
     
     

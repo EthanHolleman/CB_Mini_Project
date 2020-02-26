@@ -11,6 +11,14 @@ from data import if_not_dir_make
 
 
 def run_and_write_blast(query, out_dir, log):
+    '''
+    Function that wraps up run_blast, get_top_results and
+    write_top_results into one function. Takes in a query string
+    an output dir and the log file. Runs a blast search using biopython
+    and writes the results to a new subdir called BLAST_results in an 
+    xml file. Then takes the top ten results from that xml file and
+    writes them to log file along with a header in tsv format.
+    '''
     xml_file = run_blast(query, out_dir)
     top_results = get_top_ten_results(xml_file)
     write_top_hits(top_results, log)
@@ -23,12 +31,14 @@ def run_blast(seq_object, output_dir, dir_name='BLAST_results'):
     that can be parsed using NCBIXML.read()
     '''
     blast_path = if_not_dir_make(output_dir, dir_name)
-    xml = NCBIWWW.qblast('blastn', 'nr', str(seq_object), entrez_query='Herpesviridae[ORGN]')
+    xml_path = os.path.join(blast_path, dir_name + '.xml')
+    xml = NCBIWWW.qblast('blastn', 'nr', str(seq_object), entrez_query='Herpesviridae[ORGN]',hitlist_size=10, expect=1e-200, megablast=True, alignments=10)
     
-    with open(blast_path, "w") as out_handle:
+    with open(xml_path, "w") as out_handle:
+        print('writing results')
         out_handle.write(xml.read())
     
-    return xml
+    return xml_path
     # use an entrez query to set limit the search range
 
 
@@ -40,32 +50,26 @@ def get_top_ten_results(xml_file_path):
     be written using csv writter to log file.
     '''
     with open(xml_file_path) as handle:
-        top_hits = []
+        top_hits, i = [], 0
         blast_record = NCBIXML.read(handle)
-        for i, alignment in enumerate(blast_record.alignments):
-            if i == 10:
-                break
-            for hsp in alignment.hsps:
-                if i == 0:
-                    top_hits.append([alignment.title, alignment.length,
-                                    hsp.num_alignments, hsp.identities,
-                                    hsp.gaps, hsp.bits, hsp.expect])
-                else:
-                    top_hits.append([alignment.title, alignment.length])
+        while i < 10:
+            alignment = blast_record.alignments[i]
+            hsp = alignment.hsps[0]
+            values = [alignment.title, alignment.length,
+                        len(alignment.hsps), hsp.identities,
+                        hsp.gaps, hsp.bits, hsp.expect]
+            for j, v in enumerate(values):
+                if v == None: values[j] = 0
+            top_hits.append(values)
+            i+=1
         return top_hits
 
 
 def write_top_hits(top_hits, log):  # probably want to replace this with log file name
+    '''
+    Writes top hits from list of lists to the given log file in tsv format.
+    '''
+    HEADER = [['seq_title', 'align_len', 'number_HSPs', 'topHSP_ident',
+               'topHSP_gaps', 'topHSP_bits', 'topHSP_expect']]
     writer = csv.writer(log, delimiter='\t')
-    for row in top_hits:
-        writer.writerow(row)
-
-#from spades import concat_contigs
-#f = '/home/ethan/Documents/spades_contigs/contigs.fasta'
-#string = concat_contigs(f)
-#print(string)
-#print('Running Blast')
-#xml = run_blast(string, './')
-
-#print('Finished Blast')
-#print(get_top_ten_results(xml))
+    writer.writerows(HEADER + top_hits)

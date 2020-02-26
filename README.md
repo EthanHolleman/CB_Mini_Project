@@ -37,7 +37,7 @@ in python. If you get an error try `pip3 install biopython`.
 
 To run the pipeline in its entirety your command will look like this.
 ```
-python3 main.py -o [Path\to\your\output\directory]
+python3 main.py -o [Path/to/your/output/directory]
 ```
 This will download all files and build any required indices which can take
 quite some time. So if you would like to just see the functionality
@@ -45,3 +45,11 @@ test files can be downloaded from LINK COMING SOON and pass in these files
 with program arguements. See the args section for a more detailed look at what
 each arguement does. You can also run `python3 main.py --help` for a similar
 output.
+
+## Running with Test Data
+
+To test the pipeline's functionality using the included testdata run the
+main.py file using the command below. (This assumes you are running the program from within the project directory)
+```
+python3 main.py -o [Path/to/your/output/directory] -q [./test_data]
+```
