@@ -3,8 +3,14 @@ Comp 388 Mini Project
 
 ## Getting Started
 
-This project uses Kallisto, Sleuth, Bowtie2 and BLAST via BioPython to
-function so all of these programs are required to run the pipeline.
+This project uses a number of differnet programs to function and include...
+- [Kallisto](###Installing-Kallisto)
+- Bowtie2
+- Samtools
+- fastq-dump
+- Sleuth (R package)
+- optparse (R package)
+- Biopython (Python package)
 
 ### Installing Kallisto
 
@@ -17,6 +23,7 @@ screen.
 ### Installing Sleuth
 Sleuth is run as an R package. Follow the instructions provided by the
 [Pachter Lab](https://pachterlab.github.io/sleuth/download).
+In addition make sure you have the R package optparse installed. If not you can install it using the command `install.packages('optparse')`. This will allow the pipeline to pass file paths from python to the R script where sleuth is run from.
 
 ### Installing Bowtie2
 Use the command
@@ -51,5 +58,6 @@ output.
 To test the pipeline's functionality using the included testdata run the
 main.py file using the command below. (This assumes you are running the program from within the project directory)
 ```
-python3 main.py -o [Path/to/your/output/directory] -q [./test_data]
+python3 main.py -o [Path/to/your/output/directory] -q ./test_data/SRA_to_FASTQ
 ```
+For best results please use absolute paths when passing arguements, thanks!
