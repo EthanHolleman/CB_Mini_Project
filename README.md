@@ -4,13 +4,13 @@ Comp 388 Mini Project
 ## Getting Started
 
 This project uses a number of differnet programs to function and include...
-- [Kallisto](###Installing-Kallisto)
-- [Bowtie2](###Installing-Bowtie2)
-- [Samtools](###Installing-Samtools)
-- [fastq-dump](###Installing-fastq-dump)
-- [Sleuth (R package)](###Installing-Sleuth)
-- [optparse (R package)](###Installing-Sleuth)
-- [Biopython (Python package)](###Installing-Biopython)
+- [Kallisto](#Installing-Kallisto)
+- [Bowtie2](#Installing-Bowtie2)
+- [Samtools](#Installing-Samtools)
+- [fastq-dump](#Installing-fastq-dump)
+- [Sleuth (R package)](#Installing-Sleuth)
+- [optparse (R package)](#Installing-Sleuth)
+- [Biopython (Python package)](#Installing-Biopython)
 
 If you are missing any of these programs click the respective link for info on how to download.
 
