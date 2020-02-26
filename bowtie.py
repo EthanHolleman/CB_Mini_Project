@@ -52,7 +52,6 @@ def search_BTI(BTI, query_files, output_dir, log, threads=4):
         cmd = ['bowtie2', '-x', BTI, '-1', read_a, '-2',
                read_b, '-S', output_file, '--threads', '4', '--no-discordant', 
                '--no-unal', '--no-mixed']
-        print(' '.join(cmd))
         subprocess.call(cmd)
         fasta_file = convert_sam_to_fasta(output_file)
         output_files.append(fasta_file)

@@ -2,6 +2,7 @@ import os
 import subprocess
 import csv
 
+from data import if_not_dir_make
 
 def run_sleuth(sleuth_table, output_dir, log, results_file_name='Sleuth_results.txt'):
     '''
@@ -10,6 +11,7 @@ def run_sleuth(sleuth_table, output_dir, log, results_file_name='Sleuth_results.
     The sleuth table should be created from the make_sleuth_table function
     if it does not already exist. Returns path to the sleuth results.
     '''
+    output_dir = if_not_dir_make(output_dir, 'sleuth_results')
     sleuth_results = os.path.join(output_dir, results_file_name)
     cmd = ['Rscript', 'sleuth_R.R', '-f', sleuth_table, '-o', sleuth_results]
     subprocess.call(cmd)
