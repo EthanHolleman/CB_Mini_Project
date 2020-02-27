@@ -14,27 +14,25 @@ This project uses a number of differnet programs to function and include...
 
 If you are missing any of these programs click the respective link for info on how to download.
 
-## Running the Pipline
+## Running the Pipeline
 
 To run the pipeline in its entirety your command will look like this.
 ```
-python3 main.py -o [Path/to/your/output/directory]
+python3 main.py -o [Path/to/your/output/directory -l [Path/to/your/output/directory]
 ```
+Where -o is the path to output directory and -l is path where the log file will be written. 
+ 
 This will download all files and build any required indices which can take
-quite some time. So if you would like to just see the functionality
-test files can be downloaded from LINK COMING SOON and pass in these files
-with program arguements. See the args section for a more detailed look at what
-each arguement does. You can also run `python3 main.py --help` for a similar
-output.
+quite some time. So if you would like to just see the functionality you can run the program using the included test data. More details on that below.
 
 ## Running with Test Data
 
-To test the pipeline's functionality using the included testdata run the
+To test the pipeline's functionality using the included test data run the
 main.py file using the command below. (This assumes you are running the program from within the project directory)
 ```
-python3 main.py -o [Path/to/your/output/directory] -q ./test_data/SRA_to_FASTQ
+python3 main.py -o [Path/to/your/output/directory] -l [Path/to/your/output/directory] -q ./test_data/SRA_to_FASTQ
 ```
-For best results please use absolute paths when passing arguements, thanks!
+For best results please use absolute paths when passing arguments, thanks!
 
 ## Install Guide
 
