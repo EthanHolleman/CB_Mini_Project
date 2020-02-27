@@ -48,7 +48,7 @@ def main():
 
     sleuth_table = make_sleuth_table(args.r, args.o)
     print('Running Sleuth')
-    #sleuth_results = run_sleuth(sleuth_table, args.o, log)
+    sleuth_results = run_sleuth(sleuth_table, args.o, log)
 
     complete_genome = download_accession(args.o, log, dtype='genome')
     if not args.b:
