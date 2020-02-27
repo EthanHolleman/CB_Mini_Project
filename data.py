@@ -11,9 +11,16 @@ URLS = ['https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR566
         'https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR5660044/SRR5660044.1',
         'https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/SRR5660045/SRR5660045.1']
 
-# store urls in a constant 
+# store urls in a constant
+
 
 def if_not_dir_make(parent_dir, dir_name):
+    '''
+    Given a path to a parent dir and a new dir name checks if
+    the complete path to the dir_name is a dir. If not makes
+    that dir using os.mkdir. In either case returns the full path
+    to the complete dir (parent_dir/dir_name)
+    '''
     full_dir = os.path.join(parent_dir, dir_name)
     if not os.path.isdir(full_dir):
         os.mkdir(full_dir)
@@ -29,7 +36,7 @@ def run_wget(output_dir, urls=URLS):
     downloaded files as a list. 
     '''
     output_dir = if_not_dir_make(output_dir, 'SRA')
-    
+
     paths = []
     for url in urls:
         p = os.path.join(output_dir, os.path.basename(url))
@@ -49,7 +56,7 @@ def convert_to_fastq(SRA_paths, output_dir):
     for SRA in SRA_paths appends .fastq to the filenames.
     '''
     print('Converting files to fastq format')
-    
+
     output_dir = if_not_dir_make(output_dir, 'SRA_to_fastq')
 
     # need to get paths to paired end files
@@ -115,18 +122,19 @@ def download_accession(output_dir, log, entrez_email='eholleman@luc.edu',
 
     if dtype == 'cdna':  # for just coding sequences
         record.features = [f for f in record.features if f.type == "CDS"]
-        log.write('The HCMV Genome (EF999921) has {} # CDS\n'.format(len(record.features)))
+        log.write('The HCMV Genome (EF999921) has {} # CDS\n'.format(
+            len(record.features)))
         # write number of cds to the log file
         seq_recs = [r.extract(record) for r in record.features]
         SeqIO.write(seq_recs, output_file + '_cdna', 'fasta')
 
         return output_file + '_cdna'
-    elif dtype == 'genome':  # for whole genome 
+    elif dtype == 'genome':  # for whole genome
         SeqIO.write(record, output_file + '_genome', 'fasta')
 
         return output_file + '_genome'
-    
-    
+
+
 def get_files_from_parent(parent_dir):
     '''
     General helper function to return the absolute paths of all files in
@@ -134,5 +142,3 @@ def get_files_from_parent(parent_dir):
     the individual file paths.
     '''
     return [os.path.join(parent_dir, d) for d in os.listdir(parent_dir)]
-
-  
