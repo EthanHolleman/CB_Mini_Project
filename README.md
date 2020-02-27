@@ -44,7 +44,7 @@ it in your bin directory. To check if it is successfully installing open
 your terminal and run `kallisto --help`. You should get a standard help
 screen.
 
-### Installing Sleuth
+### Installing Sleuth and/or Optparse
 Sleuth is run as an R package. Follow the instructions provided by the
 [Pachter Lab](https://pachterlab.github.io/sleuth/download).
 In addition make sure you have the R package optparse installed. If not you can install it using the command `install.packages('optparse')`. This will allow the pipeline to pass file paths from python to the R script where sleuth is run from.
