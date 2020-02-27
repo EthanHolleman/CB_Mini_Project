@@ -10,7 +10,7 @@ from sleuth import default_conditions, test_for_condition
 
 DONOR_DICT = {'SRR5660030.1': 'Donor 1', 'SRR5660033.1': 'Donor 1',
               'SRR5660044.1': 'Donor 3', 'SRR5660045.1': 'Donor 3'}
-
+# use the donor dict to translate file names to donor numbers 
 
 def build_bowtie_index(input_file, output_dir, index_name='MP_BTI'):
     '''
@@ -38,8 +38,7 @@ def search_BTI(BTI, query_files, output_dir, log, threads=4):
     '''
     cond_dict = default_conditions()  # use to test for which condition
     output_dir = if_not_dir_make(output_dir, 'bowtie_results')
-    
-    
+      
     output_files = []
     for read_a, read_b in query_files:
         sam_name = os.path.basename(read_a) + '.sam'
@@ -51,12 +50,13 @@ def search_BTI(BTI, query_files, output_dir, log, threads=4):
         print('Running new Bowtie Search')
         cmd = ['bowtie2', '-x', BTI, '-1', read_a, '-2',
                read_b, '-S', output_file, '--threads', '4', '--no-discordant', 
-               '--no-unal', '--no-mixed']
+               '--no-unal', '--no-mixed']  # prevent unaligned and discordant reads in results
         subprocess.call(cmd)
         fasta_file = convert_sam_to_fasta(output_file)
-        output_files.append(fasta_file)
+        output_files.append(fasta_file)  # append path to fasta file
         log_string = make_read_comparison_string(read_a, fasta_file, donor, date)
-        log.write(log_string + '\n')
+        # format the log string
+        log.write(log_string + '\n')  # write the log string to log
         print(log_string)
 
     return output_files
@@ -83,11 +83,15 @@ def make_read_comparison_string(intial, postBT, donor, date):
     ''' 
     # divide by 2 again becuase interlaced paired ends
     i, p = get_fastx_length(intial), get_fastx_length(postBT, 'a') / 2
-    return '{} ({}) had {} reads pairs before Bowtie2 filtering and \
-            {} read pairs after.'.format(donor, date, i, p)
+    return '{} ({}) had {} reads pairs before Bowtie2 filtering and {} read pairs after.'.format(donor, date, i, p)
 
 
 def get_fastx_length(fastx, t='q'):
+    '''
+    Use wc -l command to return the number of entries in a fastq or
+    fasta file. Set t = q to divide number of lines by 4 for fastq files
+    or t = a to divide lines by 2 for fasta files.
+    '''
     cmd = ['wc', '-l', fastx]
     call = check_output(cmd)
     lines = call.decode('utf-8').split(' ')[0]

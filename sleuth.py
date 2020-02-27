@@ -4,6 +4,7 @@ import csv
 
 from data import if_not_dir_make
 
+
 def run_sleuth(sleuth_table, output_dir, log, results_file_name='Sleuth_results.txt'):
     '''
     Given a sleuth table and an output dir run the sleuth_R.R script
@@ -23,6 +24,11 @@ def run_sleuth(sleuth_table, output_dir, log, results_file_name='Sleuth_results.
 
 # need to see the format these come out in
 def write_results_to_log(sleuth_results, log):
+    '''
+    Given the path to the sleuth results writes a header plus
+    specific columns from each row of results to the log file.
+    Does not return anything.
+    '''
     HEADER = 'TARGET_id, test_stat, pval, qval\n'
     log_sleuth = []
     with open(sleuth_results) as sr:
@@ -31,8 +37,8 @@ def write_results_to_log(sleuth_results, log):
         for row in reader:
             log_sleuth.append([row[0], row[3], row[1], row[2]])
     writer = csv.writer(log)
-    log.write(HEADER)
-    writer.writerows(log_sleuth)
+    log.write(HEADER)  # write the header row
+    writer.writerows(log_sleuth)  # write all rows each row is represented as a sublist in log_sleuth
 
 
 def default_conditions():
@@ -63,14 +69,14 @@ def make_sleuth_table(kallisto_dirs, output_dir,
     creates an output csv table for sleuth to use. Names of file dirs are
     used for each entry.
     '''
-    if condition_dict == None:
+    if condition_dict == None:  # allows for providing alt condition dict
         condition_dict = default_conditions()
 
     sleuth_table = os.path.join(output_dir, table_name)
     with open(sleuth_table, 'w') as st:
         writer = csv.writer(st)
-        writer.writerow(['sample', 'condition', 'path'])
-        for k_dir in kallisto_dirs:
+        writer.writerow(['sample', 'condition', 'path'])  # write the header
+        for k_dir in kallisto_dirs:  # iterate through individual result dirs
             sample, condition = test_for_condition(condition_dict, k_dir)
             writer.writerow([sample, condition, k_dir])
     return sleuth_table

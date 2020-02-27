@@ -49,8 +49,9 @@ def main():
     sleuth_table = make_sleuth_table(args.r, args.o)
     print('Running Sleuth')
     sleuth_results = run_sleuth(sleuth_table, args.o, log)
-
+    print('Downloading Complete Genome')
     complete_genome = download_accession(args.o, log, dtype='genome')
+    print('Running Bowtie2')
     if not args.b:
         args.b = build_bowtie_index(complete_genome, args.o)
 
