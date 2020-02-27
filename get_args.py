@@ -23,6 +23,7 @@ def get_args():
         '-a', help='Path to assembled genome if exists')
     parse.add_argument('-t', default=2, help='Number of threads')
     parse.add_argument('-l', help='path to write log file to')
+    parse.add_argument('-local', default=0, help='If set to 1 runs BLAST search locally')
 
     parse = parse.parse_args()
     if not parse.o or not parse.l:

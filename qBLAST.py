@@ -1,5 +1,6 @@
 import csv
 import os
+import subprocess
 
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
@@ -10,7 +11,7 @@ from data import if_not_dir_make
 # run all blasting operations from this file
 
 
-def run_and_write_blast(query, out_dir, log):
+def run_and_write_blast(query, out_dir, log, local=0):
     '''
     Function that wraps up run_blast, get_top_results and
     write_top_results into one function. Takes in a query string
@@ -19,7 +20,11 @@ def run_and_write_blast(query, out_dir, log):
     xml file. Then takes the top ten results from that xml file and
     writes them to log file along with a header in tsv format.
     '''
-    xml_file = run_blast(query, out_dir)
+    if local == 1:
+        bdb = make_local_BDB()
+        xml_file = local_blast(query, bdb, out_dir)
+    else:
+        xml_file = run_blast(query, out_dir)
     top_results = get_top_ten_results(xml_file)
     write_top_hits(top_results, log)
 
@@ -73,3 +78,36 @@ def write_top_hits(top_hits, log):  # probably want to replace this with log fil
                'topHSP_gaps', 'topHSP_bits', 'topHSP_expect']]
     writer = csv.writer(log, delimiter='\t')
     writer.writerows(HEADER + top_hits)
+
+
+def local_blast(seq, local_BDB, output_dir, dir_name='BLAST_results'):
+    blast_path = if_not_dir_make(output_dir, dir_name)
+    xml_path = os.path.join(blast_path, dir_name + '.xml')
+    query_path = os.path.join(blast_path, 'BLAST_query.fasta')
+    print('writing query')
+    print(query_path)
+    with open(query_path, 'w') as qp:
+        qp.write('>Query Sequence\n')
+        qp.write(seq)
+    cmd = ['blastn', '-db', local_BDB, '-query', query_path, '-outfmt', '5', '-out', xml_path]
+    subprocess.call(cmd)
+    
+    return xml_path
+
+from Bio import Entrez
+from Bio import SeqIO
+
+
+
+
+def make_local_BDB(xz_path='./test_data/Herp_BDB.tar.xz', xz_dir='./test_data', BDB_name='Herp_BDB'):
+    cmd = ['tar', 'xf', xz_path, '-C', xz_dir]
+    subprocess.call(cmd)
+    db_name = os.path.join(xz_dir, BDB_name)
+    print(db_name)
+    
+    return db_name
+
+b = make_local_BDB()
+s = open('./assembly').readline()
+local_blast(s, b, './')

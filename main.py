@@ -71,7 +71,8 @@ def main():
     write_assembly_stats(args.a, log)
     cat = concat_contigs(args.a)
     print('Running BLAST, query length = {}'.format(len(cat)))
-    run_and_write_blast(cat, args.o, log)
+
+    run_and_write_blast(cat, args.o, log, local=args.local)
     log.close()
     print('==============================\nRun Complete')
 
