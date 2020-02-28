@@ -20,7 +20,8 @@ def run_and_write_blast(query, out_dir, log, local=0):
     an output dir and the log file. Runs a blast search using biopython
     and writes the results to a new subdir called BLAST_results in an 
     xml file. Then takes the top ten results from that xml file and
-    writes them to log file along with a header in tsv format.
+    writes them to log file along with a header in tsv format. Passing the
+    args local = 1 will run blast locally using included blast database.
     '''
     if local == 1 or local == '1':
         bdb = make_local_BDB()
@@ -85,6 +86,13 @@ def write_top_hits(top_hits, log):  # probably want to replace this with log fil
 
 
 def local_blast(seq, local_BDB, output_dir, dir_name='BLAST_results'):
+    '''
+    Runs BLAST locally using BLAST+ and the included BLAST database which
+    is compressed and included in the test_data dir. Calls make_local_BDB
+    to uncompress the files, writes the query string to a file and then
+    BLASTS against the uncompressed local database. Returns a path to
+    the results in xml format.
+    '''
     blast_path = if_not_dir_make(output_dir, dir_name)
     xml_path = os.path.join(blast_path, dir_name + '.xml')
     query_path = os.path.join(blast_path, 'BLAST_query.fasta')
@@ -101,6 +109,10 @@ def local_blast(seq, local_BDB, output_dir, dir_name='BLAST_results'):
 
 
 def make_local_BDB(xz_path='./test_data/Herp_BDB.tar.xz', xz_dir='./test_data', BDB_name='Herp_BDB'):
+    '''
+    Unpacks the included local blast database. Created using all nucleotide seqs
+    that are searchable on genbank with the search term Herpesviridae[ORGN]
+    '''
     cmd = ['tar', 'xf', xz_path, '-C', xz_dir]
     subprocess.call(cmd)
     db_name = os.path.join(xz_dir, BDB_name)
