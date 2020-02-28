@@ -14,7 +14,7 @@ This project uses a number of differnet programs to function and include...
 
 If you are missing any of these programs click the respective link for info on how to download.
 
-## Running the Pipeline
+## Running the Pipeline in Full
 
 To run the pipeline in its entirety your command will look like this.
 ```
@@ -32,6 +32,9 @@ main.py file using the command below. (This assumes you are running the program 
 ```
 python3 main.py -o [Path/to/your/output/directory] -l [Path/to/your/output/directory] -q ./test_data/SRA_to_FASTQ
 ```
+
+To speed things up even more you can run BLAST locally by adding the arguement `-local 1`. `-local` is set to 0 by default which will cause the pipeline to run BLAST over the internet.  
+
 For best results please use absolute paths when passing arguments, thanks!
 
 ## Install Guide
