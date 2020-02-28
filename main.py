@@ -16,7 +16,7 @@ from spades import (assemble_with_spades, concat_contigs, make_big_fasta,
 def main():
 
     args = get_args()
-    log = open(os.path.join(args.o, 'miniproject.log'), 'w')
+    log = open(os.path.join(args.o, 'miniProject.log'), 'w')
     log.write('Comp Bio Mini Project\n')
 
     if not args.q:  # dont need paths to SRA files if already have fastq
