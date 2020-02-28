@@ -1,6 +1,6 @@
 Comp Bio Mini Project
 The HCMV Genome (EF999921) has 168 # CDS
-TARGET_id	 test_stat	 pval	 qval
+TARGET_id	test_stat	pval	qval
 <unknown_59	14.8058663288888	0.000119164234539767	0.0117093829168113
 <unknown_66	14.4990246483655	0.000140232130740256	0.0117093829168113
 <unknown_30	13.0094839327533	0.000309917340698531	0.0154311874422261
@@ -21,16 +21,16 @@ Donor 1 (2dpi) had 2259287.0 reads pairs before Bowtie2 filtering and 1744101.0 
 Donor 1 (6dpi) had 2004530.0 reads pairs before Bowtie2 filtering and 1482759.0 read pairs after.
 Donor 3 (2dpi) had 2730258.0 reads pairs before Bowtie2 filtering and 2382996.0 read pairs after.
 Donor 3 (6dpi) had 2476889.0 reads pairs before Bowtie2 filtering and 1500834.0 read pairs after.
-There are 63 contigs > 1000bp in the assembly.
-There are 2041471 bp in the assembly
+There are 63 contigs > 1000bp in the assembly
+There are 2039274 bp in the assembly
 seq_title	align_len	number_HSPs	topHSP_ident	topHSP_gaps	topHSP_bits	topHSP_expect
-gi|404315683|gb|JX512204.1| Human herpesvirus 5 strain HAN16, complete genome	235112	64	14905	0	27525.4	0.0
-gi|523510377|gb|KF297339.1| Human herpesvirus 5 strain TB40/E clone Lisa, complete genome	237683	66	14905	0	27525.4	0.0
-gi|157779983|gb|EF999921.1| Human herpesvirus 5 strain TB40/E clone TB40-BAC4, complete sequence	229050	63	14905	0	27525.4	0.0
-gi|1098408701|gb|KX544839.1| Human herpesvirus 5 isolate TB40-E_UNC, complete genome	228992	63	14899	3	27488.5	0.0
-gi|823076282|gb|KR534201.1| Human herpesvirus 5 strain JER2002, complete genome	235339	65	14853	0	27237.4	0.0
-gi|822890166|gb|KP745657.1| Human herpesvirus 5 strain BE/13/2011, complete genome	235713	66	14852	3	27228.1	0.0
-gi|822908276|gb|KP745712.1| Human herpesvirus 5 strain BE/19/2010, complete genome	235365	65	14850	3	27217.0	0.0
-gi|823075433|gb|KR534196.1| Human herpesvirus 5 strain JER847, complete genome	235713	64	14848	0	27209.7	0.0
-gi|822911216|gb|KP745720.1| Human herpesvirus 5 strain BE/15/2011, complete genome	235905	62	14848	0	27209.7	0.0
-gi|822889664|gb|KP745654.1| Human herpesvirus 5 strain BE/19/2011, complete genome	235446	66	14846	3	27202.3	0.0
+gb|KF297339.1| Human herpesvirus 5 strain TB40/E clone Lisa, complete genome	237683	70	14905	0	27525.4	0.0
+gb|JX512204.1| Human herpesvirus 5 strain HAN16, complete genome	235112	74	14905	0	27525.4	0.0
+gb|EF999921.1| Human herpesvirus 5 strain TB40/E clone TB40-BAC4, complete sequence	229050	67	14905	0	27525.4	0.0
+gb|KX544839.1| Human herpesvirus 5 isolate TB40-E_UNC, complete genome	228992	67	14899	3	27488.5	0.0
+gb|KR534201.1| Human herpesvirus 5 strain JER2002, complete genome	235339	70	14853	0	27237.4	0.0
+gb|KP745657.1| Human herpesvirus 5 strain BE/13/2011, complete genome	235713	74	14852	3	27228.1	0.0
+gb|KP745712.1| Human herpesvirus 5 strain BE/19/2010, complete genome	235365	70	14850	3	27217.0	0.0
+gb|KP745720.1| Human herpesvirus 5 strain BE/15/2011, complete genome	235905	72	14848	0	27209.7	0.0
+gb|KR534196.1| Human herpesvirus 5 strain JER847, complete genome	235713	70	14848	0	27209.7	0.0
+gb|KP745654.1| Human herpesvirus 5 strain BE/19/2011, complete genome	235446	73	14846	3	27202.3	0.0
