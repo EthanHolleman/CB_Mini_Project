@@ -5,6 +5,8 @@ import subprocess
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
 from Bio.Seq import Seq
+from Bio import Entrez
+from Bio import SeqIO
 
 from data import if_not_dir_make
 
@@ -20,7 +22,7 @@ def run_and_write_blast(query, out_dir, log, local=0):
     xml file. Then takes the top ten results from that xml file and
     writes them to log file along with a header in tsv format.
     '''
-    if local == 1:
+    if local == 1 or local == '1':
         bdb = make_local_BDB()
         xml_file = local_blast(query, bdb, out_dir)
     else:
@@ -37,12 +39,13 @@ def run_blast(seq_object, output_dir, dir_name='BLAST_results'):
     '''
     blast_path = if_not_dir_make(output_dir, dir_name)
     xml_path = os.path.join(blast_path, dir_name + '.xml')
-    xml = NCBIWWW.qblast('blastn', 'nr', str(seq_object), entrez_query='Herpesviridae[ORGN]',hitlist_size=10, expect=1e-200, megablast=True, alignments=10)
-    
+    xml = NCBIWWW.qblast('blastn', 'nr', str(
+        seq_object), entrez_query='Herpesviridae[ORGN]', hitlist_size=10, expect=1e-200, megablast=True, alignments=10)
+
     with open(xml_path, "w") as out_handle:
         print('writing results')
         out_handle.write(xml.read())
-    
+
     return xml_path
     # use an entrez query to set limit the search range
 
@@ -61,12 +64,13 @@ def get_top_ten_results(xml_file_path):
             alignment = blast_record.alignments[i]
             hsp = alignment.hsps[0]
             values = [alignment.title, alignment.length,
-                        len(alignment.hsps), hsp.identities,
-                        hsp.gaps, hsp.bits, hsp.expect]
+                      len(alignment.hsps), hsp.identities,
+                      hsp.gaps, hsp.bits, hsp.expect]
             for j, v in enumerate(values):
-                if v == None: values[j] = 0
+                if v == None:
+                    values[j] = 0
             top_hits.append(values)
-            i+=1
+            i += 1
         return top_hits
 
 
@@ -89,15 +93,11 @@ def local_blast(seq, local_BDB, output_dir, dir_name='BLAST_results'):
     with open(query_path, 'w') as qp:
         qp.write('>Query Sequence\n')
         qp.write(seq)
-    cmd = ['blastn', '-db', local_BDB, '-query', query_path, '-outfmt', '5', '-out', xml_path]
+    cmd = ['blastn', '-db', local_BDB, '-query',
+           query_path, '-outfmt', '5', '-out', xml_path]
     subprocess.call(cmd)
-    
+
     return xml_path
-
-from Bio import Entrez
-from Bio import SeqIO
-
-
 
 
 def make_local_BDB(xz_path='./test_data/Herp_BDB.tar.xz', xz_dir='./test_data', BDB_name='Herp_BDB'):
@@ -105,9 +105,5 @@ def make_local_BDB(xz_path='./test_data/Herp_BDB.tar.xz', xz_dir='./test_data', 
     subprocess.call(cmd)
     db_name = os.path.join(xz_dir, BDB_name)
     print(db_name)
-    
-    return db_name
 
-b = make_local_BDB()
-s = open('./assembly').readline()
-local_blast(s, b, './')
+    return db_name

@@ -48,7 +48,7 @@ def main():
 
     sleuth_table = make_sleuth_table(args.r, args.o)
     print('Running Sleuth')
-    sleuth_results = run_sleuth(sleuth_table, args.o, log)
+    #sleuth_results = run_sleuth(sleuth_table, args.o, log)
     print('Downloading Complete Genome')
     complete_genome = download_accession(args.o, log, dtype='genome')
     print('Running Bowtie2')
@@ -71,7 +71,7 @@ def main():
     write_assembly_stats(args.a, log)
     cat = concat_contigs(args.a)
     print('Running BLAST, query length = {}'.format(len(cat)))
-
+    print(args.local)
     run_and_write_blast(cat, args.o, log, local=args.local)
     log.close()
     print('==============================\nRun Complete')
