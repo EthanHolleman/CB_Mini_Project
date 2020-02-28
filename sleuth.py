@@ -29,7 +29,7 @@ def write_results_to_log(sleuth_results, log):
     specific columns from each row of results to the log file.
     Does not return anything.
     '''
-    HEADER = 'TARGET_id, test_stat, pval, qval\n'
+    HEADER = ['TARGET_id', 'test_stat', 'pval', 'qval']
     log_sleuth = []
     with open(sleuth_results) as sr:
         reader = csv.reader(sr, delimiter=' ')
