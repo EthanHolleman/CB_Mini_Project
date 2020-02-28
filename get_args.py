@@ -35,7 +35,7 @@ def get_args():
         parse.o = cwd_name
     if not parse.l:
         parse.l = cwd_name
-    if parse.test = 1 or parse.test = '1':
+    if parse.test == 1 or parse.test == '1':
         parse.q = './test_data/SRA_to_FASTQ'
         
         
