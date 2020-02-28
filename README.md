@@ -14,6 +14,19 @@ This project uses a number of differnet programs to function and include...
 
 If you are missing any of these programs click the respective link for info on how to download.
 
+## Running with Test Data
+
+The most straightforward way to run the pipeline is using the command below.
+```
+python3 main.py -test 1 -local 1 
+```
+Setting `test 1` tells the pipeline to use the included test data and `-local 1` tells the pipeline to run BLAST locally. This will write all results to a new directory called miniProject_Ethan_Holleman in your current working directory. Additionally if `main.py` is not in your current working directory please specify the path to it.  
+To run the pipeline with test data and BLAST over the internet use the command below.
+```
+python3 main.py -test 1
+```
+In both cases a log file named `miniProject.log` will be written to miniProject_Ethan Holleman.
+
 ## Running the Pipeline in Full
 
 To run the pipeline in its entirety your command will look like this.
@@ -25,19 +38,8 @@ Where -o is the path to output directory and -l is path where the log file will 
 This will download all files and build any required indices which can take
 quite some time. So if you would like to just see the functionality you can run the program using the included test data. More details on that below.
 
-## Running with Test Data
 
-To test the pipeline's functionality using the included test data run the
-main.py file using the command below. (This assumes you are running the program from within the project directory)
-```
-python3 main.py -o [Path/to/your/output/directory] -l [Path/to/your/output/directory] -q ./test_data/SRA_to_FASTQ
-```
-
-To speed things up even more you can run BLAST locally by adding the arguement `-local 1`. `-local` is set to 0 by default which will cause the pipeline to run BLAST over the internet.  
-
-For best results please use absolute paths when passing arguments, thanks!
-
-## Install Guide
+# Install Guide
 
 ### Installing Kallisto
 
