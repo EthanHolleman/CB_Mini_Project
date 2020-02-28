@@ -1,5 +1,8 @@
 import argparse
 import sys
+import os
+
+from data import if_not_dir_make
 
 
 def get_args():
@@ -26,9 +29,13 @@ def get_args():
     parse.add_argument('-local', default=0, help='If set to 1 runs BLAST search locally')
 
     parse = parse.parse_args()
-    if not parse.o or not parse.l:
-        print('Please provide a log and output paths')
-        sys.exit(1)
+    cwd_name = if_not_dir_make(os.getcwd(), 'miniProject_Ethan_Holleman')
+    if not parse.o:
+        parse.o = cwd_name
+    if not parse.l:
+        parse.l = cwd_name
+        
+        
 
     # output directory should be miniProject_Ethan_Holleman
 
