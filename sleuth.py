@@ -36,7 +36,7 @@ def write_results_to_log(sleuth_results, log):
         next(reader)  # skip the header row
         for row in reader:
             log_sleuth.append([row[0], row[3], row[1], row[2]])
-    writer = csv.writer(log)
+    writer = csv.writer(log, delimiter='\t')
     log.write(HEADER)  # write the header row
     writer.writerows(log_sleuth)  # write all rows each row is represented as a sublist in log_sleuth
 

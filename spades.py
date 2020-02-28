@@ -89,7 +89,6 @@ def write_assembly_stats(contigs, log, cut=1000):
     '''
     length = count_length_assembly(contigs)
     contigs_above_thres = count_contigs(contigs, cut)
-
-    log.write('Total Length of Assembly in BB: {}\n'.format(length))
-    log.write('Number of contigs with length > {}: {}\n'.format(
-        cut, contigs_above_thres))
+    log.write('There are {} contigs > 1000bp in the assembly\n'.format(
+        contigs_above_thres))
+    log.write('There are {} bp in the assembly\n'.format(length))

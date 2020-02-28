@@ -1,4 +1,0 @@
-get_args module
-***************
-
-get_args.get_args()
